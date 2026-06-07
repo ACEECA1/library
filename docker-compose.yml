@@ -28,6 +28,20 @@ services:
     networks:
       - app-network
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.13.4
+    restart: unless-stopped
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - "9200:9200"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    networks:
+      - app-network
+
   backend:
     build:
       context: ./library
@@ -36,6 +50,10 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      rabbitmq:
+        condition: service_started
+      elasticsearch:
+        condition: service_started
     env_file:
       - ./library/.env.docker
     volumes:
@@ -49,8 +67,6 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-      args:
-        VITE_API_URL: ${VITE_API_URL:-http://${HOST_IP:-localhost}:8080/api}
     restart: unless-stopped
     depends_on:
       - backend
@@ -61,6 +77,7 @@ services:
 
 volumes:
   db_data:
+  es_data:
   library_storage:
 
 networks:
