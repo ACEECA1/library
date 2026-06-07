@@ -29,7 +29,7 @@ services:
       - app-network
 
   elasticsearch:
-    image: elasticsearch:8.13.4
+    image: elasticsearch:8.19.0
     restart: unless-stopped
     environment:
       - discovery.type=single-node
