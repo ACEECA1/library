@@ -13,7 +13,7 @@ services:
       test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p$$MYSQL_ROOT_PASSWORD"]
       interval: 10s
       timeout: 5s
-      retries: 30
+      retries: 60
     networks:
       - app-network
   rabbitmq:
@@ -41,6 +41,11 @@ services:
       - es_data:/usr/share/elasticsearch/data
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:9200 >/dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 
   backend:
     build:
@@ -53,7 +58,7 @@ services:
       rabbitmq:
         condition: service_started
       elasticsearch:
-        condition: service_started
+        condition: service_healthy
     env_file:
       - ./library/.env.docker
     volumes:
@@ -71,7 +76,7 @@ services:
     depends_on:
       - backend
     ports:
-      - "80:80"
+      - "0.0.0.0:80:80"
     networks:
       - app-network
 
