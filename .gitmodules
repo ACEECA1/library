@@ -1,6 +1,6 @@
 [submodule "frontend"]
 	path = frontend
-	url = https://github.com/ACEECA1/library-frontend.git
+	url = https://github.com/ChematWalid/library-frontend.git
 [submodule "backend"]
 	path = library
-	url = https://github.com/ACEECA1/library-backend.git
+	url = https://github.com/ChematWalid/library-backend.git

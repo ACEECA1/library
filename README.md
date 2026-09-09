@@ -28,7 +28,7 @@ A lightweight, fully-featured digital library platform for managing, reading, an
 Since the frontend and backend are kept in separate git submodules, you need to use the `--recurse-submodules` flag when cloning:
 
 ```bash
-git clone --recurse-submodules https://github.com/ACEECA1/library.git
+git clone --recurse-submodules https://github.com/ChematWalid/library.git
 cd library
 ```
 
